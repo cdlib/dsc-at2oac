@@ -1,2 +1,4 @@
 XSLT 1.0 to process archivists' toolkit 2.x output to get it
 ready for submission to oac.cdlib.org with voroEAD
+
+xsltproc at2oac.xsl AT_OUTPUT.xml --output VORO_INPUT.xml
