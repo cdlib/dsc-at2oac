@@ -7,5 +7,5 @@ To run this XSLT you can use libxml2/libxslt http://xmlsoft.org/XSLT/
 
 OR you can use saxon http://saxon.sourceforge.net/
 
-	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT at2oac.xsl
+	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl
 
