@@ -61,11 +61,10 @@
   </xsl:attribute>
 </xsl:template>
 
-<!-- strip out overloaded container labels -->
+<!-- copy overloaded container labels to sibling physdesc -->
 <xsl:template match="ead:container[@label]">
   <xsl:element name="{name()}" namespace="{$namespace}">
-    <xsl:apply-templates select="@*[name()!='label']"/>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="@*[name()!='label'] | node() "/>
   </xsl:element>
   <xsl:element name="physdesc" namespace="{$namespace}">
     <xsl:value-of select="@label"/>
