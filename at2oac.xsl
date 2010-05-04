@@ -6,15 +6,11 @@
     </xsl:copy>
 </xsl:template>
 
-<xsl:template match="container[@label]">
-  <xsl:copy copy-namespaces="yes">
-    <xsl:apply-templates select="@*[not(name()='label')]|node()"/>
-  </xsl:copy>
-</xsl:template>
+<xsl:template match="@label[local-name(..)='container']"/>
 
 <!-- identity -->
 <xsl:template match="@*|node()">
-  <xsl:copy copy-namespaces="yes">
+  <xsl:copy>
     <xsl:apply-templates select="@*|node()"/>
   </xsl:copy>
 </xsl:template>
