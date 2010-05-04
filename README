@@ -9,3 +9,15 @@ OR you can use saxon http://saxon.sourceforge.net/
 
 	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl
 
+Changes it makes:
+
+- adds a type attribute to dsc 
+  (uses supplied XSLT parameter dsc-type or default value of 'combined')
+
+- copies repositorycode and countrycode from eadid to archdesc/did/unitid
+  (or uses supplied XSLT paramters repositorycode / countrycode )
+
+- converts the country code to uppercase as per the schema
+
+- strips out label attributes on container elements because they are
+  not really labels
