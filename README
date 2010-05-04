@@ -19,8 +19,8 @@ Changes it makes:
 
 - converts the country code to uppercase as per the schema
 
-- strips out label attributes on container elements because they are
-  not really labels
+- turns did/container/@label to did/physdesc
+  
 
 Produced by the California Digital Library, Digital Special Collections
 	http://www.cdlib.org/services/dsc/

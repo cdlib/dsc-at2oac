@@ -1,7 +1,8 @@
 <xsl:stylesheet 
   version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:ead="urn:isbn:1-931666-22-9">
+  xmlns:ead="urn:isbn:1-931666-22-9"
+  xmlns="urn:isbn:1-931666-22-9">
 
 <xsl:param name="dsc-type" select="'combined'"/>
 <xsl:param name="repositorycode" select="/ead:ead/ead:eadheader/ead:eadid/@mainagencycode"/>
@@ -10,6 +11,8 @@
 	select="translate(
 		/ead:ead/ead:eadheader/ead:eadid/@countrycode,
 		'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' )" />
+
+<xsl:param name="namespace" select="'urn:isbn:1-931666-22-9'"/>
 
 <!-- root template -->
 <xsl:template match="/|comment()|processing-instruction()">
@@ -20,7 +23,7 @@
 
 <!-- add dsc/@type -->
 <xsl:template match="ead:dsc[parent::ead:archdesc and position()=1]">
-  <xsl:element name="{name()}">
+  <xsl:element name="{name()}" namespace="{$namespace}">
     <xsl:apply-templates select="@*"/>
     <xsl:if test="not(@type) and $dsc-type!=''">
       <xsl:attribute name="type">
@@ -35,7 +38,7 @@
      archdesc/did/unittitle
 -->
 <xsl:template match="ead:unitid[parent::ead:did and not(ancestor::ead:dsc)]">
-  <xsl:element name="{name()}">
+  <xsl:element name="{name()}" namespace="{$namespace}">
     <xsl:apply-templates select="@*"/>
     <xsl:if test="not(@repositorycode) and $repositorycode!=''">
       <xsl:attribute name="repositorycode">
@@ -59,7 +62,15 @@
 </xsl:template>
 
 <!-- strip out overloaded container labels -->
-<xsl:template match="@label[local-name(..)='container']"/>
+<xsl:template match="ead:container[@label]">
+  <xsl:element name="{name()}" namespace="{$namespace}">
+    <xsl:apply-templates select="@*[name()!='label']"/>
+    <xsl:apply-templates/>
+  </xsl:element>
+  <xsl:element name="physdesc" namespace="{$namespace}">
+    <xsl:value-of select="@label"/>
+  </xsl:element>
+</xsl:template>
 
 <!-- identity -->
 <xsl:template match="@*|node()">
