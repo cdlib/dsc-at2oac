@@ -1,11 +1,64 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet 
+  version="1.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:ead="urn:isbn:1-931666-22-9">
 
+<xsl:param name="dsc-type" select="'combined'"/>
+<xsl:param name="repositorycode" select="/ead:ead/ead:eadheader/ead:eadid/@mainagencycode"/>
+<xsl:param 
+	name="countrycode" 
+	select="translate(
+		/ead:ead/ead:eadheader/ead:eadid/@countrycode,
+		'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' )" />
+
+<!-- root template -->
 <xsl:template match="/|comment()|processing-instruction()">
     <xsl:copy>
       <xsl:apply-templates/>
     </xsl:copy>
 </xsl:template>
 
+<!-- add dsc/@type -->
+<xsl:template match="ead:dsc[parent::ead:archdesc and position()=1]">
+  <xsl:element name="{name()}">
+    <xsl:apply-templates select="@*"/>
+    <xsl:if test="not(@type)">
+      <xsl:attribute name="type">
+        <xsl:value-of select="$dsc-type"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+<!-- copy repositorycode and countrycode from eadid to unitid in
+     archdesc/did/unittitle
+-->
+<xsl:template match="ead:unitid[parent::ead:did and not(ancestor::ead:dsc)]">
+  <xsl:element name="{name()}">
+    <xsl:apply-templates select="@*"/>
+    <xsl:if test="not(@repositorycode)">
+      <xsl:attribute name="repositorycode">
+        <xsl:value-of select="$repositorycode"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="not(@countrycode)">
+      <xsl:attribute name="countrycode">
+        <xsl:value-of select="$countrycode"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+<!-- upper-case the country code -->
+<xsl:template match="@countrycode[parent::ead:eadid]">
+  <xsl:attribute name="countrycode">
+    <xsl:value-of select="$countrycode"/>
+  </xsl:attribute>
+</xsl:template>
+
+<!-- strip out overloaded container labels -->
 <xsl:template match="@label[local-name(..)='container']"/>
 
 <!-- identity -->
