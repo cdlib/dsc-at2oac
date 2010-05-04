@@ -22,7 +22,7 @@
 <xsl:template match="ead:dsc[parent::ead:archdesc and position()=1]">
   <xsl:element name="{name()}">
     <xsl:apply-templates select="@*"/>
-    <xsl:if test="not(@type)">
+    <xsl:if test="not(@type) and $dsc-type!=''">
       <xsl:attribute name="type">
         <xsl:value-of select="$dsc-type"/>
       </xsl:attribute>
@@ -37,12 +37,12 @@
 <xsl:template match="ead:unitid[parent::ead:did and not(ancestor::ead:dsc)]">
   <xsl:element name="{name()}">
     <xsl:apply-templates select="@*"/>
-    <xsl:if test="not(@repositorycode)">
+    <xsl:if test="not(@repositorycode) and $repositorycode!=''">
       <xsl:attribute name="repositorycode">
         <xsl:value-of select="$repositorycode"/>
       </xsl:attribute>
     </xsl:if>
-    <xsl:if test="not(@countrycode)">
+    <xsl:if test="not(@countrycode) and $countrycode!=''">
       <xsl:attribute name="countrycode">
         <xsl:value-of select="$countrycode"/>
       </xsl:attribute>
