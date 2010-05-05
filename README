@@ -11,39 +11,39 @@ running
 
 To run this XSLT you can use libxml2/libxslt http://xmlsoft.org/XSLT/
 
-	`xsltproc --output VORO_INPUT.xml at2oac.xsl AT_OUTPUT.xml`
+	xsltproc --output VORO_INPUT.xml at2oac.xsl AT_OUTPUT.xml
 
 OR you can use saxon http://saxon.sourceforge.net/
 
-	`java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl`
+	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl
 
 Changes it makes
 ----------------
 
 - adds a type attribute to dsc 
-  (uses supplied XSLT parameter dsc-type or default value of 'combined')
+  (uses supplied XSLT parameter `dsc-type` or default value of `'combined'`)
 
 - copies repositorycode and countrycode from eadid to archdesc/did/unitid
-  (or uses supplied XSLT paramters repositorycode / countrycode )
+  (or uses supplied XSLT paramters `repositorycode` / `countrycode` )
 
 - converts the country code to uppercase as per the schema
 
-- turns did/container/@label to did/physdesc or removes the lables
-  depending on the value of stylesheet parameter label-to-physdesc
+- defaults to removing did/container/@label or copies to did/physdesc 
+  if the stylesheet parameter `label-to-physdesc` is unset
 
 - defaults to stripping out xsi:schemaLocation and putting the ead into
   xmlns=""; to preserve xsi:schemaLocation and xmlns="urn:isbn:1-931666-22-9"
-  use stylesheet parameter strip-namespace of something other than 'yes'
+  use stylesheet parameter `strip-namespace` of something other than 'yes'
 
 Download
 --------
-	http://bitbucket.org/btingle/at2oac/src
+	[http://bitbucket.org/btingle/at2oac/src](http://bitbucket.org/btingle/at2oac/src)
 
 Credits
 -------
 Produced by the California Digital Library, Digital Special Collections
-	http://www.cdlib.org/services/dsc/
+	[http://www.cdlib.org/services/dsc/](http://www.cdlib.org/services/dsc/)
 
 Issue tracker
 -------------
-	http://bitbucket.org/btingle/at2oac/issues
+	[http://bitbucket.org/btingle/at2oac/issues](http://bitbucket.org/btingle/at2oac/issues)
