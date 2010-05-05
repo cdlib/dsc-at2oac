@@ -9,11 +9,11 @@ preview and submission to oac.cdlib.org with voroEAD
 running
 -------
 
-To run this XSLT you can use libxml2/libxslt http://xmlsoft.org/XSLT/
+To run this XSLT you can use [libxml2/libxslt](http://xmlsoft.org/XSLT/)
 
 	xsltproc --output VORO_INPUT.xml at2oac.xsl AT_OUTPUT.xml
 
-OR you can use saxon http://saxon.sourceforge.net/
+OR you can use [saxon](http://saxon.sourceforge.net/)
 
 	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl
 
@@ -45,4 +45,4 @@ Produced by the [California Digital Library, Digital Special Collections](http:/
 
 Issue tracker
 -------------
-[http://bitbucket.org/btingle/at2oac/issues](http://bitbucket.org/btingle/at2oac/issues)
+report problems [http://bitbucket.org/btingle/at2oac/issues](http://bitbucket.org/btingle/at2oac/issues)
