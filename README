@@ -22,5 +22,12 @@ Changes it makes:
 - turns did/container/@label to did/physdesc or removes the lables
   depending on the value of stylesheet parameter label-to-physdesc
 
+- defaults to stripping out xsi:schemaLocation and putting the ead into
+  xmlns=""; to preserve xsi:schemaLocation and xmlns="urn:isbn:1-931666-22-9"
+  use stylesheet parameter strip-namespace of something other than 'yes'
+
 Produced by the California Digital Library, Digital Special Collections
 	http://www.cdlib.org/services/dsc/
+
+Issue tracker:
+	http://bitbucket.org/btingle/at2oac/issues

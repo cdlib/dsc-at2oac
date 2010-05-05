@@ -1,20 +1,44 @@
 <xsl:stylesheet 
   version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:ead="urn:isbn:1-931666-22-9"
   xmlns="urn:isbn:1-931666-22-9">
 
+<!-- set strip-namespace to anything other than yes to
+     disable default stripping
+-->
+<xsl:param name="strip-namespace" select="'yes'"/>
+
+<!-- set label-to-physdesc to anything other than '' to 
+     disable default removal of mis-labeled container/@label's
+     and they will be converted to sibling <physdesc>'s instead
+-->
+<xsl:param name="label-to-physdesc"/> 
+
+<!-- supply alternate dsc type or use default -->
 <xsl:param name="dsc-type" select="'combined'"/>
-<xsl:param name="repositorycode" select="/ead:ead/ead:eadheader/ead:eadid/@mainagencycode"/>
+
+<!-- supply repositorycode or use default -->
+<xsl:param 
+	name="repositorycode" 
+	select="/ead:ead/ead:eadheader/ead:eadid/@mainagencycode"/>
+
+<!-- supply countrycode or use default -->
 <xsl:param 
 	name="countrycode" 
 	select="translate(
 		/ead:ead/ead:eadheader/ead:eadid/@countrycode,
 		'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' )" />
 
-<xsl:param name="namespace" select="'urn:isbn:1-931666-22-9'"/>
-
-<xsl:param name="label-to-physdesc"/> 
+<xsl:variable name="namespace">
+  <xsl:choose>
+    <xsl:when test="$strip-namespace = 'yes'"/>
+    <xsl:otherwise>
+      <xsl:text>urn:isbn:1-931666-22-9</xsl:text>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
 
 <!-- root template -->
 <xsl:template match="/|comment()|processing-instruction()">
@@ -75,11 +99,47 @@
   </xsl:if>
 </xsl:template>
 
-<!-- identity -->
-<xsl:template match="@*|node()">
-  <xsl:copy>
-    <xsl:apply-templates select="@*|node()"/>
-  </xsl:copy>
+<!-- modified identity templates -->
+
+<xsl:template match="*">
+  <xsl:choose>
+    <xsl:when test="$namespace!=''">
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:element name="{local-name()}" namespace="{$namespace}">
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:element>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="@*">
+  <xsl:choose>
+    <xsl:when test="$namespace!=''">
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:attribute name="{local-name()}">
+        <xsl:value-of select="."/>
+      </xsl:attribute>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="@xsi:*">
+  <xsl:choose>
+    <xsl:when test="$namespace!=''">
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise/>
+  </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
