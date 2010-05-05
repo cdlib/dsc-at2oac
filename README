@@ -29,7 +29,7 @@ Changes it makes
 - converts the country code to uppercase as per the schema
 
 - defaults to removing did/container/@label or copies to did/physdesc 
-  if the stylesheet parameter `label-to-physdesc` is unset
+  if the stylesheet parameter `label-to-physdesc` is set to anything
 
 - defaults to stripping out xsi:schemaLocation and putting the ead into
   xmlns=""; to preserve xsi:schemaLocation and xmlns="urn:isbn:1-931666-22-9"

@@ -40,6 +40,8 @@
   </xsl:choose>
 </xsl:variable>
 
+<xsl:param name="label-to-physdesc"/> 
+
 <!-- root template -->
 <xsl:template match="/|comment()|processing-instruction()">
     <xsl:copy>
