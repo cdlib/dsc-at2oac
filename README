@@ -1,15 +1,23 @@
-XSLT 1.0 to process archivists' toolkit 2.x output to get it
-ready for submission to oac.cdlib.org with voroEAD
+<!-- -*- markdown -*- -->
+at2oac
+======
+
+XSLT 1.0 to process archivists' toolkit output to get it ready for
+preview and submission to oac.cdlib.org with voroEAD
+
+running
+-------
 
 To run this XSLT you can use libxml2/libxslt http://xmlsoft.org/XSLT/
 
-	xsltproc --output VORO_INPUT.xml at2oac.xsl AT_OUTPUT.xml
+	`xsltproc --output VORO_INPUT.xml at2oac.xsl AT_OUTPUT.xml`
 
 OR you can use saxon http://saxon.sourceforge.net/
 
-	java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl
+	`java -jar saxonb-x.x.jar -o VORO_INPUT.xml AT_OUTPUT.xml at2oac.xsl`
 
-Changes it makes:
+Changes it makes
+----------------
 
 - adds a type attribute to dsc 
   (uses supplied XSLT parameter dsc-type or default value of 'combined')
@@ -26,8 +34,15 @@ Changes it makes:
   xmlns=""; to preserve xsi:schemaLocation and xmlns="urn:isbn:1-931666-22-9"
   use stylesheet parameter strip-namespace of something other than 'yes'
 
+Download
+--------
+	http://bitbucket.org/btingle/at2oac/src
+
+Credits
+-------
 Produced by the California Digital Library, Digital Special Collections
 	http://www.cdlib.org/services/dsc/
 
-Issue tracker:
+Issue tracker
+-------------
 	http://bitbucket.org/btingle/at2oac/issues
