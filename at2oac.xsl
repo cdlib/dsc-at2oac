@@ -14,6 +14,8 @@
 
 <xsl:param name="namespace" select="'urn:isbn:1-931666-22-9'"/>
 
+<xsl:param name="label-to-physdesc"/> 
+
 <!-- root template -->
 <xsl:template match="/|comment()|processing-instruction()">
     <xsl:copy>
@@ -66,9 +68,11 @@
   <xsl:element name="{name()}" namespace="{$namespace}">
     <xsl:apply-templates select="@*[name()!='label'] | node() "/>
   </xsl:element>
-  <xsl:element name="physdesc" namespace="{$namespace}">
-    <xsl:value-of select="@label"/>
-  </xsl:element>
+  <xsl:if test="$label-to-physdesc">
+    <xsl:element name="physdesc" namespace="{$namespace}">
+      <xsl:value-of select="@label"/>
+    </xsl:element>
+  </xsl:if>
 </xsl:template>
 
 <!-- identity -->
