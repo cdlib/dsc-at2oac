@@ -35,6 +35,9 @@ Changes it makes
   xmlns=""; to preserve xsi:schemaLocation and xmlns="urn:isbn:1-931666-22-9"
   use stylesheet parameter `strip-namespace` of something other than 'yes'
 
+- changes AT style dao (many dao per c0x outside did) to MOAC style
+  (one dao per c0x inside did)
+
 Download
 --------
 [http://bitbucket.org/btingle/at2oac/src](http://bitbucket.org/btingle/at2oac/src)
