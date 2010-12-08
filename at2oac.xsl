@@ -3,6 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:ead="urn:isbn:1-931666-22-9"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns="urn:isbn:1-931666-22-9">
 
 <!-- set strip-namespace to anything other than yes to
@@ -36,6 +37,15 @@
     <xsl:when test="$strip-namespace = 'yes'"/>
     <xsl:otherwise>
       <xsl:text>urn:isbn:1-931666-22-9</xsl:text>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="xlink-namespace">
+  <xsl:choose>
+    <xsl:when test="$strip-namespace = 'yes'"/>
+    <xsl:otherwise>
+      <xsl:text>http://www.w3.org/1999/xlink</xsl:text>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
@@ -88,6 +98,7 @@
 </xsl:template>
 
 <!-- copy overloaded container labels to sibling physdesc -->
+<!-- TODO: specifically target AT @label values? -->
 <xsl:template match="ead:container[@label]">
   <xsl:element name="{name()}" namespace="{$namespace}">
     <xsl:apply-templates select="@*[name()!='label'] | node() "/>
@@ -97,6 +108,39 @@
       <xsl:value-of select="@label"/>
     </xsl:element>
   </xsl:if>
+</xsl:template>
+
+<!-- dao from AT style to MOAC style -->
+<xsl:template match="ead:dao[not(parent::ead:did) and not(parent::ead:archdesc)]">
+  <xsl:variable name="plusone">
+    <xsl:value-of select="number(substring(name(..),2,2))+1"/>
+  </xsl:variable>
+  <xsl:variable name="cD">
+    <xsl:choose>
+      <xsl:when test="$plusone &lt; 10">
+        <xsl:text>c0</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>c1</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <!-- c0x -->
+  <xsl:element name="{$cD}{number($plusone) mod 10}" namespace="{$namespace}">
+    <!-- did -->
+    <xsl:element name="did" namespace="{$namespace}">
+      <!-- unititle -->
+      <xsl:element namespace="{$namespace}" name="unittitle">
+        <xsl:value-of select="ead:daodesc/ead:p"/>
+      </xsl:element>
+      <!-- dao -->
+      <xsl:element namespace="{$namespace}" name="dao">
+        <xsl:attribute name="href" namespace="{$xlink-namespace}">
+          <xsl:value-of select="@xlink:href"/>
+        </xsl:attribute>
+      </xsl:element>
+    </xsl:element>
+  </xsl:element>
 </xsl:template>
 
 <!-- modified identity templates -->
