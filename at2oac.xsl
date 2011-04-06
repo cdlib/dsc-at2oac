@@ -194,6 +194,21 @@
   </xsl:choose>
 </xsl:template>
 
+<xsl:template match="@xlink:actuate">
+  <xsl:choose>
+    <xsl:when test="$namespace!=''">
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:attribute name="{local-name()}">
+        <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+      </xsl:attribute>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <xsl:template match="@xsi:*">
   <xsl:choose>
     <xsl:when test="$namespace!=''">
