@@ -228,23 +228,23 @@
     </xsl:when>
     <xsl:otherwise>
       <!-- hack @xlink: attributes to be EAD 2002 DTD link attributes -->
-      <xsl:choose>
-        <!-- @xlink:acuate and @xlink:show 
-             whith the value "other" and "none"
-             convert to 
-             acutateother, showother, acutatenone, or shownone
-        -->
-        <xsl:when test=".='other' or .='none'">
-          <xsl:value-of select="local-name()"/>
-          <xsl:value-of select="."/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="{local-name()}">
-            <!-- @xlink camel case values get foled to EAD DTD all lower case values -->
-            <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
-          </xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:attribute name="{local-name()}">
+        <xsl:choose>
+          <!-- @xlink:acuate and @xlink:show 
+               whith the value "other" and "none"
+               convert to 
+               acutateother, showother, acutatenone, or shownone
+          -->
+          <xsl:when test=".='other' or .='none'">
+            <xsl:value-of select="local-name()"/>
+            <xsl:value-of select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+              <!-- @xlink camel case values get foled to EAD DTD all lower case values -->
+              <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
