@@ -194,6 +194,30 @@
   </xsl:choose>
 </xsl:template>
 
+
+<!-- convert @xlink to EAD linking attributes if $namespace='' -->
+<!-- @xlink:
+      http://www.w3.org/TR/xlink/#link-behaviors -->
+<!-- EAD linking attributes: 
+      http://www.loc.gov/ead/tglib/att_link.html -->
+
+<!-- rename xlink:type to linktype (or copy as is) -->
+<xsl:template match="@xlink:type">
+  <xsl:choose>
+    <xsl:when test="$namespace!=''">
+      <!-- keep the @xlink: attributes if we are not nuking namespaces -->
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:attribute name='linktype'>
+        <xsl:value-of select="."/>
+      </xsl:attribute>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <xsl:template match="@xlink:actuate | @xlink:show">
   <xsl:choose>
     <xsl:when test="$namespace!=''">
@@ -205,20 +229,22 @@
     <xsl:otherwise>
       <!-- hack @xlink: attributes to be EAD 2002 DTD link attributes -->
       <xsl:choose>
-        <xsl:when test=".='other'">
+        <!-- @xlink:acuate and @xlink:show 
+             whith the value "other" and "none"
+             convert to 
+             acutateother, showother, acutatenone, or shownone
+        -->
+        <xsl:when test=".='other' or .='none'">
           <xsl:value-of select="local-name()"/>
-          <xsl:text>other</xsl:text>
-        </xsl:when>
-        <xsl:when test=".='none'">
-          <xsl:value-of select="local-name()"/>
-          <xsl:text>none</xsl:text>
+          <xsl:value-of select="."/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="{local-name()}">
+            <!-- @xlink camel case values get foled to EAD DTD all lower case values -->
             <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
           </xsl:attribute>
         </xsl:otherwise>
-      <xsl:choose>
+      </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
