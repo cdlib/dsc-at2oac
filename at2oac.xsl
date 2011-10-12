@@ -194,17 +194,31 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="@xlink:actuate">
+<xsl:template match="@xlink:actuate | @xlink:show">
   <xsl:choose>
     <xsl:when test="$namespace!=''">
+      <!-- keep the @xlink: attributes if we are not nuking namespaces -->
       <xsl:copy>
         <xsl:apply-templates select="@*|node()"/>
       </xsl:copy>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:attribute name="{local-name()}">
-        <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
-      </xsl:attribute>
+      <!-- hack @xlink: attributes to be EAD 2002 DTD link attributes -->
+      <xsl:choose>
+        <xsl:when test=".='other'">
+          <xsl:value-of select="local-name()"/>
+          <xsl:text>other</xsl:text>
+        </xsl:when>
+        <xsl:when test=".='none'">
+          <xsl:value-of select="local-name()"/>
+          <xsl:text>none</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="{local-name()}">
+            <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+          </xsl:attribute>
+        </xsl:otherwise>
+      <xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
