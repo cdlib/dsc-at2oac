@@ -260,10 +260,18 @@
   </xsl:choose>
 </xsl:template>
 
+<xsl:template match="c|ead:c"><!-- c2c0x -->
+  <xsl:variable name="depth" select="1 + count(ancestor::c|ancestor::ead:c)"/>
+  <xsl:element name="c{format-number($depth,'00')}" namespace="{$namespace}">
+    <xsl:apply-templates select="@*" mode="at2oac"/>
+    <xsl:apply-templates mode="at2oac"/>
+  </xsl:element>
+</xsl:template>
+
 </xsl:stylesheet>
 <!--
 
-Copyright (c) 2010, Regents of the University of California
+Copyright (c) 2012, Regents of the University of California
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
